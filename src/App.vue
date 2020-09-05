@@ -1,85 +1,90 @@
 <template>
-  <div>
-    <div class ="nav">
-      <ul>
-        <li  v-for="navi in navies" :key="navi.id">
-          <a @click="selectNavi(navi.id)" href="#">{{ navi.title }}</a>
-        </li>
-      </ul>
+  <div class="container">
+  <div class="row">
+    <div class="col-12 mt-5 px-5">
+      <h2 class="text-center">Services</h2>
+      <div v-for="lesson in lessons" :key="lesson.id" :class="{ 'selected': lesson.isSelected }"
+            @click="toggleActive(lesson)" 
+           class="card mb-2">
+        <div class="card-body">
+          <div class="card-text">
+            <span>{{ lesson.name }}</span>
+            <span class="float-right">$ {{ lesson.price}}</span>            
+          </div>
+        </div>
+      </div>
+      <div class="total mb-5">
+        <div class="arrow mb-2"></div>
+        <span>Total : </span>
+        <span class="float-right">$ {{ total() }}</span>
+
+      </div>
+      </div>
     </div>
-    <div class="result">
-      <span>You choose : {{ selectedNavi.title }}</span>
     </div>
-  </div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      navies: [
-        { id: 1,  title: 'Services' },
-        { id: 2,  title: 'Products' },
-        { id: 3,  title: 'About' },
-        { id: 4,  title: 'Gallery' },
-        { id: 5,  title: 'Login' },
+      lessons: [
+        { id: 1, name: 'Web Development', price: 300, isSelected: true },
+        { id: 2, name: 'Network Administrator', price: 500, isSelected: false },
+        { id: 3, name: 'Mobile Development', price: 250, isSelected: true },
       ],
-      selectedNavi: '',
+      sumTotal: 0,
     }
   },
+  computed: {
+
+  },
   methods: {
-    selectNavi(id) {
-      this.selectedNavi = this.navies.filter(navi => navi.id === id)[0]
+    toggleActive(lesson) {
+      lesson.isSelected = !lesson.isSelected;
+    },
+    total() {
+      var total = 0;
+      this.lessons.forEach(lesson => {
+        if (lesson.isSelected) {
+          total += lesson.price;
+        }
+      });
+
+      return total;
+
     }
   }
 }
 </script>
 
-<style>
-  * {
-    padding: 0;
-    margin: 0;
-  }
+<style scoped>
+  .container {
+  background-color: #61a1bc;
+}
 
-  body {
-    text-align: center;
-    font-family: 'Verdana';
-    margin:10px 10px;
-  }
+h2 { color: white; }
 
-  .nav {
-    background-color: rgb(44, 84, 100);
-    min-width: 100px;
-    color:white;
-    padding:0 10px;
-  }
+.card {
+  background-color: #e35885;
+  color: white;
+  font-weight:bold;
+  font-size:20px;
+}
 
-  .nav > ul {
-    margin: auto;
-    width:50%;
-  }
+.selected {
+  background-color:yellow;
+  color:black;
+}
 
-  .nav > ul li {
-    display: inline;
-    margin-right: 20px;
-  }
+.total {
+  color:white;
+  font-weight:bold;
+  font-size:20px;
+}
 
-  .nav > ul li > a {
-    color:white;
-  }
-
-  .nav > ul li > a:hover {
-    text-decoration: none;
-    color:yellow;
-  }
-
-  .result {
-    background-color: rgb(163, 163, 224);
-    color:rgb(78, 31, 47);
-  }
-
-  .result > span {
-    font-weight:bold;
-  }
+.arrow {
+  border: 1px solid white;
+}
 
 </style>
